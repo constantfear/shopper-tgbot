@@ -3,7 +3,7 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS public.users
 (
-    user_id integer NOT NULL,
+    user_id SERIAL NOT NULL,
     "Name" character varying COLLATE pg_catalog."default" NOT NULL,
     tg_user_id integer NOT NULL,
     CONSTRAINT users_pkey PRIMARY KEY (user_id)
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS public.users
 
 CREATE TABLE IF NOT EXISTS public.orders
 (
-    order_id integer NOT NULL,
+    order_id SERIAL NOT NULL,
     user_id integer NOT NULL,
     date date,
     adress character varying,
@@ -22,14 +22,14 @@ CREATE TABLE IF NOT EXISTS public.orders
 
 CREATE TABLE IF NOT EXISTS public.status
 (
-    status_id integer,
+    status_id SERIAL NOT NULL,
     status_name character varying,
     PRIMARY KEY (status_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.order_list
 (
-    id integer NOT NULL,
+    id SERIAL NOT NULL,
     order_id integer NOT NULL,
     product_id integer NOT NULL,
     amount integer NOT NULL,
@@ -39,9 +39,8 @@ CREATE TABLE IF NOT EXISTS public.order_list
 
 CREATE TABLE IF NOT EXISTS public.products
 (
-    product_id integer NOT NULL,
+    product_id SERIAL NOT NULL,
     name character varying NOT NULL,
-    img character varying NOT NULL,
     description text,
     price integer NOT NULL,
     product_type integer NOT NULL,
@@ -50,7 +49,7 @@ CREATE TABLE IF NOT EXISTS public.products
 
 CREATE TABLE IF NOT EXISTS public.type
 (
-    type_id integer NOT NULL,
+    type_id SERIAL NOT NULL,
     type_name character varying NOT NULL,
     PRIMARY KEY (type_id)
 );
@@ -94,5 +93,9 @@ ALTER TABLE IF EXISTS public.products
     ON DELETE NO ACTION
     NOT VALID;
 
+INSERT INTO status (status_name) VALUES ('saveed'), ('delivered');
+
+INSERT INTO type (type_name) VALUES ('type_1'), ('type_2'), ('type_3'), ('type_4'), ('type_5');
 
 END;
+

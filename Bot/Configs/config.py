@@ -9,10 +9,12 @@ class TgBot:
 
 @dataclass
 class DataBase:
+    drivername: str
     host: str
-    database_name: str
+    port: str
     user: str
     password: str
+    database_name: str
 
 @dataclass
 class Config:
@@ -29,9 +31,11 @@ def make_config(env_path: str or None = None) -> Config:
             seller_id = int(env('SELLER_ID')),
         ),
         db=DataBase(
+            drivername = env('DRIVER_NAME'),
             host = env('HOST'),
-            database_name = env('DB_NAME'),
-            user = env('USER'),
-            password = env('PASSWORD')
+            port = env('PORT'),
+            user = env('DB_USERNAME'),
+            password = env('PASSWORD'),
+            database_name = env('DB_NAME')
         )
     )
