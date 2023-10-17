@@ -15,6 +15,9 @@ LEXICON_MESSAGE: dict[str, str] = {
     'add_product_price': 'Введите цену за единицу товара',
     'added': 'Товар добавлен',
 
+    'change_product': 'Введите id товара',
+    'found_product': 'Найден продукт',
+
     'error_try_again': 'Произошла ошибка! попробуйте еще раз',
     'cancel': 'Возвращаемся назад',
     'other': "Неизвестная команда",
@@ -37,5 +40,9 @@ LEXICON_KEYBOARD: dict[str, str] = {
     'delete_product': 'Удалить товар',
     'show_orders': 'Посмотреть список заказов',
     'exit': 'Выйти из панели управления',
-    'save': 'Сохранить'
+    'save': 'Сохранить',
+
+    'edit_name': 'Редактировать название',
+    'edit_description': 'Редактировать описание',
+    'edit_price': 'Редактировать цену',
 }

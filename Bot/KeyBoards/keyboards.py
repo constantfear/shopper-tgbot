@@ -13,6 +13,9 @@ delete_product = KeyboardButton(text=LEXICON_KEYBOARD['delete_product'])
 show_orders = KeyboardButton(text=LEXICON_KEYBOARD['show_orders'])
 exit_button = KeyboardButton(text=LEXICON_KEYBOARD['exit'])
 
+edit_name = KeyboardButton(text=LEXICON_KEYBOARD['edit_name'])
+edit_description = KeyboardButton(text=LEXICON_KEYBOARD['edit_description'])
+edit_price = KeyboardButton(text=LEXICON_KEYBOARD['edit_price'])
 
 
 cancel = KeyboardButton(text=LEXICON_KEYBOARD['cancel'])
@@ -37,9 +40,21 @@ admin_panel = ReplyKeyboardMarkup(
             show_products, 
             change_product,
             add_product,
-            delete_product,
             show_orders,
             exit_button
+        ]
+    ],
+    resize_keyboard=True
+)
+
+edit_product_panel = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            edit_name, 
+            edit_description,
+            edit_price,
+            delete_product,
+            cancel
         ]
     ],
     resize_keyboard=True

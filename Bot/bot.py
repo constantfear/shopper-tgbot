@@ -2,7 +2,7 @@ from aiogram import Bot, Dispatcher
 from Configs.config import make_config
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from Handlers import comand_handlers, make_order_handlers, seller_connection_handlers, other_handlers, show_products, admin_handlers, add_product_handlers
+from Handlers import comand_handlers, make_order_handlers, seller_connection_handlers, other_handlers, show_products, admin_handlers, add_product_handlers, change_product_handlers
 
 import asyncio
 import logging
@@ -28,6 +28,7 @@ async def main() -> None:
     dp.include_router(comand_handlers.router)
     dp.include_router(admin_handlers.router)
     dp.include_router(add_product_handlers.router)
+    dp.include_router(change_product_handlers.router)
     dp.include_router(show_products.router)
     dp.include_router(make_order_handlers.router)
     dp.include_router(seller_connection_handlers.router)
