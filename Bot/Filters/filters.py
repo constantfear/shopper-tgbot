@@ -25,4 +25,17 @@ class ChangeProduct(StatesGroup):
     enter_new_price = State()
     delete_product = State()
     save_changes = State()
-    
+
+class MakeOrder(StatesGroup):
+    make_order_panel = State()
+    enter_product_id = State()
+    enter_product_amount = State()
+    save_order = State() 
+    enter_phone = State()
+    enter_address = State()
+
+class ShowOrder(StatesGroup):
+    show_orders = State()
+    enter_order_id = State()
+    change_order_status = State()
+    show_order_products = State()

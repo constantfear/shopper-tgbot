@@ -45,4 +45,11 @@ LEXICON_KEYBOARD: dict[str, str] = {
     'edit_name': 'Редактировать название',
     'edit_description': 'Редактировать описание',
     'edit_price': 'Редактировать цену',
+
+    'add_product_to_order': 'Добавить товар',
+    'save_order': 'Сохранить заказ',
+
+    'show_order_list': 'show_order_list',
+    'change_order_status': 'change_order_status',
+
 }

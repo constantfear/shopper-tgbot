@@ -11,7 +11,6 @@ from Lexicon.lexicon import LEXICON_MESSAGE, LEXICON_KEYBOARD
 from Filters.filters import Admin, AddProduct
 import Functions.functions as func
 from Database.products import add_products
-from Database.connection_to_database import engine
 
 config = make_config()
 
@@ -53,7 +52,7 @@ async def enter_Price(message: Message, state: FSMContext):
 async def save_product(message: Message, state: FSMContext):
     product_data = await state.get_data()
     try:
-        add_products(engine, product_data['product_name'], product_data['product_description'], product_data['product_price'], product_data['product_type'])
+        add_products(product_data['product_name'], product_data['product_description'], product_data['product_price'], product_data['product_type'])
         await message.answer(text = LEXICON_MESSAGE['added'], parse_mode='HTML', reply_markup=admin_panel)
     except:
         await message.answer(text = LEXICON_MESSAGE['error'], parse_mode='HTML', reply_markup=admin_panel)

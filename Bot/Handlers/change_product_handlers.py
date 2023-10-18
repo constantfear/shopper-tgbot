@@ -11,7 +11,6 @@ from Lexicon.lexicon import LEXICON_MESSAGE, LEXICON_KEYBOARD
 from Filters.filters import Admin, ChangeProduct
 import Functions.functions as func
 import Database.products as prod
-from Database.connection_to_database import engine
 
 
 
@@ -22,7 +21,7 @@ router = Router()
 async def show_products(message: Message, state: FSMContext):
     product_id = int(message.text)
     await state.update_data(product_id=product_id)
-    product = prod.get_product_by_id(engine, product_id)
+    product = prod.get_product_by_id(product_id)
     p = ''.join([str(row[0])+'. '+row[1]+'\n' for row in product])
     if p:
         msg = LEXICON_MESSAGE['found_product']+p
@@ -42,7 +41,7 @@ async def change_product(message: Message, state: FSMContext):
 async def show_products(message: Message, state: FSMContext):
     data = await state.get_data()
     try:
-        prod.update_product_name(engine, data['product_id'], message.text)
+        prod.update_product_name(data['product_id'], message.text)
         await message.answer(text = 'changed', parse_mode='HTML', reply_markup=admin_panel)
     except:
         await message.answer(text=LEXICON_MESSAGE['error'])
@@ -58,7 +57,7 @@ async def change_product(message: Message, state: FSMContext):
 async def show_products(message: Message, state: FSMContext):
     data = await state.get_data()
     try:
-        prod.update_product_description(engine, data['product_id'], message.text)
+        prod.update_product_description(data['product_id'], message.text)
         await message.answer(text = 'changed', parse_mode='HTML', reply_markup=admin_panel)
     except Exception as ex:
         await message.answer(text=LEXICON_MESSAGE['error'], parse_mode='HTML', reply_markup=admin_panel)
@@ -75,7 +74,7 @@ async def change_product(message: Message, state: FSMContext):
 async def show_products(message: Message, state: FSMContext):
     data = await state.get_data()
     try:
-        prod.update_product_price(engine, data['product_id'], int(message.text))
+        prod.update_product_price(data['product_id'], int(message.text))
         await message.answer(text = 'changed', parse_mode='HTML', reply_markup=admin_panel)
     except:
         await message.answer(text=LEXICON_MESSAGE['error'])
@@ -86,7 +85,7 @@ async def show_products(message: Message, state: FSMContext):
 async def change_product(message: Message, state: FSMContext):
     data = await state.get_data()
     try:
-        prod.delete_product(engine, data['product_id'])
+        prod.delete_product(data['product_id'])
         await message.answer(text = 'deleted', parse_mode='HTML', reply_markup=admin_panel)
     except:
         await message.answer(text=LEXICON_MESSAGE['error'])

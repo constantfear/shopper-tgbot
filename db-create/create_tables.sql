@@ -1,20 +1,12 @@
 BEGIN;
 
 
-CREATE TABLE IF NOT EXISTS public.users
-(
-    user_id SERIAL NOT NULL,
-    "Name" character varying COLLATE pg_catalog."default" NOT NULL,
-    tg_user_id integer NOT NULL,
-    CONSTRAINT users_pkey PRIMARY KEY (user_id)
-);
-
 CREATE TABLE IF NOT EXISTS public.orders
 (
     order_id SERIAL NOT NULL,
     user_id integer NOT NULL,
-    date date,
-    adress character varying,
+    date timestamp NOT NULL DEFAULT NOW(),
+    addres character varying,
     phone character varying,
     order_status integer,
     PRIMARY KEY (order_id)
@@ -54,13 +46,6 @@ CREATE TABLE IF NOT EXISTS public.type
     PRIMARY KEY (type_id)
 );
 
-ALTER TABLE IF EXISTS public.orders
-    ADD FOREIGN KEY (user_id)
-    REFERENCES public.users (user_id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
 
 ALTER TABLE IF EXISTS public.orders
     ADD FOREIGN KEY (order_status)
@@ -93,7 +78,7 @@ ALTER TABLE IF EXISTS public.products
     ON DELETE NO ACTION
     NOT VALID;
 
-INSERT INTO status (status_name) VALUES ('saveed'), ('delivered');
+INSERT INTO status (status_name) VALUES ('saved'), ('delivered');
 
 INSERT INTO type (type_name) VALUES ('type_1'), ('type_2'), ('type_3'), ('type_4'), ('type_5');
 
