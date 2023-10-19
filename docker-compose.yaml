@@ -1,6 +1,13 @@
 version: '3.1'
 
 services:
+  tg-bot:
+    build: ./Bot
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+      
   postgres:
     image: postgres:14.1-alpine
     restart: always
