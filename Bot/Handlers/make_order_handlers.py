@@ -26,17 +26,18 @@ async def proc_start_command(message: Message, state: FSMContext):
 
 @router.message(F.text == LEXICON_KEYBOARD['add_product_to_order'], StateFilter(MakeOrder.make_order_panel))
 async def proc_start_command(message: Message, state: FSMContext):
-    await message.answer(text = 'add_product_to_order', parse_mode='HTML', reply_markup=empty_keyboard)
+    await message.answer(text = LEXICON_MESSAGE['add_product_to_order'], parse_mode='HTML', reply_markup=empty_keyboard)
     await state.set_state(MakeOrder.enter_product_id)
 
 @router.message(StateFilter(MakeOrder.enter_product_id))
 async def proc_start_command(message: Message, state: FSMContext):
     product_id = int(message.text)
-    product = prod.get_product_by_id(product_id)
+    product = prod.get_product_by_id(product_id).first()
     await state.update_data(product_id = product_id)
-    p = ''.join([str(row[0])+'. '+row[1]+'\n' for row in product])
-    if p:
-        msg = LEXICON_MESSAGE['found_product']+p+'\nВведите кол-во'
+   
+    if product:
+        p = '\n' + str(product)
+        msg = LEXICON_MESSAGE['found_product']+func.to_message(product)
         await message.answer(text = msg, parse_mode='HTML', reply_markup=cancel_panel)
         await state.set_state(MakeOrder.enter_product_amount)
     else:
@@ -46,7 +47,7 @@ async def proc_start_command(message: Message, state: FSMContext):
 
 @router.message(F.text == LEXICON_KEYBOARD['cancel'], StateFilter(MakeOrder.enter_product_amount))
 async def proc_start_command(message: Message, state: FSMContext):
-    await message.answer(text = 'cancel', parse_mode='HTML', reply_markup=make_order)
+    await message.answer(text = LEXICON_MESSAGE['cancel'], parse_mode='HTML', reply_markup=make_order)
     await state.set_state(MakeOrder.make_order_panel)
 
 @router.message(StateFilter(MakeOrder.enter_product_amount))
@@ -55,9 +56,7 @@ async def proc_start_command(message: Message, state: FSMContext):
         product_amount = int(message.text)
         data = await state.get_data()
         data['order'][data['product_id']] = product_amount
-        msg = 'added'
-        print(data['order'])
-        await message.answer(text = msg, parse_mode='HTML', reply_markup=make_order)
+        await message.answer(text = LEXICON_MESSAGE['added_to_order'], parse_mode='HTML', reply_markup=make_order)
         await state.set_state(MakeOrder.make_order_panel)
     except:
         await message.answer(text=LEXICON_MESSAGE['error'], reply_markup=make_order)
@@ -68,21 +67,21 @@ async def proc_start_command(message: Message, state: FSMContext):
 async def proc_start_command(message: Message, state: FSMContext):
     product_data = await state.get_data()
     if len(product_data['order']) > 0:
-        await message.answer(text = 'save_order', parse_mode='HTML', reply_markup=cancel_panel)
+        await message.answer(text = LEXICON_MESSAGE['save_order_phone'], parse_mode='HTML', reply_markup=cancel_panel)
         await state.set_state(MakeOrder.enter_phone)
     else:
-        await message.answer(text = 'not enough', parse_mode='HTML', reply_markup=make_order)
+        await message.answer(text = LEXICON_MESSAGE['order_empty'], parse_mode='HTML', reply_markup=make_order)
 
 @router.message(F.text == LEXICON_KEYBOARD['cancel'], StateFilter(MakeOrder.enter_phone))
 async def proc_start_command(message: Message, state: FSMContext):
-    await message.answer(text = 'cancel', parse_mode='HTML', reply_markup=make_order)
+    await message.answer(text = LEXICON_MESSAGE['cancel'], parse_mode='HTML', reply_markup=make_order)
     await state.set_state(MakeOrder.make_order_panel)
 
 @router.message(StateFilter(MakeOrder.enter_phone))
 async def proc_start_command(message: Message, state: FSMContext):
     if func.is_valid_phone_number(message.text):
         await state.update_data(phone = message.text)
-        await message.answer(text = 'enter addres', parse_mode='HTML', reply_markup=cancel_panel)
+        await message.answer(text = LEXICON_MESSAGE['save_order_addres'], parse_mode='HTML', reply_markup=cancel_panel)
         await state.set_state(MakeOrder.enter_address)
     else:
         await message.answer(text = LEXICON_MESSAGE['error_try_again'], parse_mode='HTML', reply_markup=cancel_panel)
@@ -90,13 +89,14 @@ async def proc_start_command(message: Message, state: FSMContext):
 
 @router.message(F.text == LEXICON_KEYBOARD['cancel'], StateFilter(MakeOrder.enter_address))
 async def proc_start_command(message: Message, state: FSMContext):
-    await message.answer(text = 'cancel', parse_mode='HTML', reply_markup=make_order)
+    await message.answer(text = LEXICON_MESSAGE['cancel'], parse_mode='HTML', reply_markup=make_order)
     await state.set_state(MakeOrder.make_order_panel)
 
 @router.message(StateFilter(MakeOrder.enter_address))
 async def proc_start_command(message: Message, state: FSMContext):
     await state.update_data(addres = message.text)
-    await message.answer(text = 'save?', parse_mode='HTML', reply_markup=save_or_cancel_panel)
+    product_data = await state.get_data()
+    await message.answer(text = LEXICON_MESSAGE['save_order'], parse_mode='HTML', reply_markup=save_or_cancel_panel)
     await state.set_state(MakeOrder.save_order)
 
 
@@ -105,8 +105,8 @@ async def save_product(message: Message, state: FSMContext, bot: Bot):
     product_data = await state.get_data()
     try:
         ord.insert_order(message.from_user.id, product_data['order'], product_data['phone'], product_data['addres'])
-        await bot.send_message(config.tg_bot.seller_id, text='New Order!')
-        await message.answer(text = LEXICON_MESSAGE['added'], parse_mode='HTML', reply_markup=main_panel)
+        await bot.send_message(config.tg_bot.seller_id, text=LEXICON_MESSAGE['new_order_for_seller'])
+        await message.answer(text = LEXICON_MESSAGE['new_order'], parse_mode='HTML', reply_markup=main_panel)
 
         await state.clear()
     except Exception as ex:
@@ -117,12 +117,12 @@ async def save_product(message: Message, state: FSMContext, bot: Bot):
 
 @router.message(F.text == LEXICON_KEYBOARD['cancel'], StateFilter(MakeOrder.save_order))
 async def save_product(message: Message, state: FSMContext):
-    await message.answer(text = 'cancel', parse_mode='HTML', reply_markup=make_order)
+    await message.answer(text = LEXICON_MESSAGE['cancel'], parse_mode='HTML', reply_markup=make_order)
     await state.set_state(MakeOrder.make_order_panel)
 
 
 @router.message(F.text == LEXICON_KEYBOARD['cancel'], StateFilter(MakeOrder.make_order_panel))
 async def proc_start_command(message: Message, state: FSMContext):
-    await message.answer(text = 'cancel', parse_mode='HTML', reply_markup=main_panel)
+    await message.answer(text = LEXICON_MESSAGE['cancel'], parse_mode='HTML', reply_markup=main_panel)
     await state.clear()
 

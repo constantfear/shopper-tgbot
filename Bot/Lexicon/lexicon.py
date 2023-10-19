@@ -1,6 +1,6 @@
 LEXICON_MESSAGE: dict[str, str] = {
-    'start': 'Стартовое сообщение',
-    'help': 'Сообщение помощи',
+    'start': 'Пример бота для небольшого магазина\nВведите /help, чтобы узнать что он может',
+    'help': 'Этот бот может: \n -Вывод товаров\n -Оформлять заказ\n -Связаться с продавцом',
 
     'show_products': 'Вывод товаров',
     'connect_with_seller_phone': 'Введите ваш номер, чтобы продавец мог связаться с вами',
@@ -16,18 +16,34 @@ LEXICON_MESSAGE: dict[str, str] = {
     'added': 'Товар добавлен',
 
     'change_product': 'Введите id товара',
+    'change_product_name': 'Введите новое название товара',
+    'change_product_description': 'Введите новое описание товара',
+    'change_product_price': 'Введите новую цену товара',
+    'delete_product': 'Товар удален',
+    'changed': 'Изменения сохранены',
     'found_product': 'Найден продукт',
 
+
+    'add_product_to_order': 'Введите id товара, который вы хотите добавить к заказу',
+    'save_order_phone': 'Введите ваш номер ',
+    'save_order_addres': 'Введите ваш адрес для доставки',
+    'save_order': 'Все верно?',
+    'get_order_id': 'Введите id заказа',
+    'new_order': 'Заказ сохранен',
+    'order_empty': 'Заказ пуст!',
+    'added_to_order': 'Товар добавлен к заказу',
+    'new_order_for_seller': 'Новый заказ!',
+    'found_product': 'Найден продукт',
+    'changed_order_status': 'Статус заказа изменен на "Доставлено"',
+
     'error_try_again': 'Произошла ошибка! попробуйте еще раз',
+    'exit': 'Выходим',    
     'cancel': 'Возвращаемся назад',
     'other': "Неизвестная команда",
     'error': 'Произошла ошибка',
     'empty_products': 'Товаров данного типа нет'
 }
 
-LEXICON_MENU: dict[str, str] = {
-
-}
 
 LEXICON_KEYBOARD: dict[str, str] = {
     'show_products': 'Показать товары',
@@ -49,7 +65,14 @@ LEXICON_KEYBOARD: dict[str, str] = {
     'add_product_to_order': 'Добавить товар',
     'save_order': 'Сохранить заказ',
 
-    'show_order_list': 'show_order_list',
-    'change_order_status': 'change_order_status',
+    'show_order_list': 'Вывести товары в заказе',
+    'change_order_status': 'Изменить статус заказа',
 
 }
+
+PRODUCT_HEADER = ['Id', 'Название', 'Описание', 'Цена', 'Тип товара']
+
+ORDER_HEADER = ['Id', 'User td Id', 'Дата заказа', 'Телефон', 'Адрес', 'Статус']
+
+ORDER_LIST_HEADER = ['Название товара', 'Кол-во', 'Стоимость']
+

@@ -12,7 +12,7 @@ def get_products_by_type(type: int) -> CursorResult:
 
     with engine.connect() as conn:
         query = (
-            select(products, type_cols.type_name).join(types, products_cols.product_type==type_cols.type_id).where(products.c.product_type==type)
+            select(products_cols.product_id, products_cols.name, products_cols.description, products_cols.price, type_cols.type_name).join(types, products_cols.product_type==type_cols.type_id).where(products.c.product_type==type)
         )
         res = conn.execute(query)
         return res
@@ -42,9 +42,10 @@ def get_product_by_id(id: int) -> CursorResult:
     products_cols = products.c
     type_cols = types.c
 
+
     with engine.connect() as conn:
         query = (
-            select(products, type_cols.type_name).join(types, products_cols.product_type==type_cols.type_id).where(products.c.product_id==id)
+            select(products_cols.product_id, products_cols.name, products_cols.description, products_cols.price, type_cols.type_name).join(types, products_cols.product_type==type_cols.type_id).where(products.c.product_id==id)
         )
         res = conn.execute(query)
         return res

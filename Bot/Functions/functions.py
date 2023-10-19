@@ -1,4 +1,5 @@
 import re
+from tabulate import tabulate
 
 def is_valid_phone_number(phone_number: str) -> bool:
     """The function checks the correctness of the entered phone number"""
@@ -20,3 +21,23 @@ def is_valid_phone_number(phone_number: str) -> bool:
     
     return True
 
+def to_table_message(table_header: list[str], table_rows) -> str:
+
+    if not table_rows:
+        return ""
+
+    table = tabulate(table_rows, table_header, tablefmt="pretty")
+
+
+    return '<code>'+table+'</code>'
+
+def to_message(data) -> str:
+    msg = f"""
+Тип: {data[4]}
+Название: {data[1]}
+Описание: {data[2]}
+Цена за единицу товара: {data[3]}
+
+Введите количество
+"""
+    return msg

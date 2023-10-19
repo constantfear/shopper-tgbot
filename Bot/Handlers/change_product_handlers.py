@@ -34,7 +34,7 @@ async def show_products(message: Message, state: FSMContext):
 
 @router.message(F.text == LEXICON_KEYBOARD['edit_name'], StateFilter(ChangeProduct.enter_setting))
 async def change_product(message: Message, state: FSMContext):
-    await message.answer(text = 'change_product', parse_mode='HTML', reply_markup=empty_keyboard)
+    await message.answer(text = LEXICON_MESSAGE['change_product_name'], parse_mode='HTML', reply_markup=empty_keyboard)
     await state.set_state(ChangeProduct.enter_new_name)
 
 @router.message(StateFilter(ChangeProduct.enter_new_name))
@@ -42,7 +42,7 @@ async def show_products(message: Message, state: FSMContext):
     data = await state.get_data()
     try:
         prod.update_product_name(data['product_id'], message.text)
-        await message.answer(text = 'changed', parse_mode='HTML', reply_markup=admin_panel)
+        await message.answer(text = LEXICON_MESSAGE['changed'], parse_mode='HTML', reply_markup=admin_panel)
     except:
         await message.answer(text=LEXICON_MESSAGE['error'])
     await state.clear()
@@ -50,7 +50,7 @@ async def show_products(message: Message, state: FSMContext):
 
 @router.message(F.text == LEXICON_KEYBOARD['edit_description'], StateFilter(ChangeProduct.enter_setting))
 async def change_product(message: Message, state: FSMContext):
-    await message.answer(text = 'edit_description', parse_mode='HTML', reply_markup=empty_keyboard)
+    await message.answer(text = LEXICON_MESSAGE['change_product_description'], parse_mode='HTML', reply_markup=empty_keyboard)
     await state.set_state(ChangeProduct.enter_new_description)
 
 @router.message(StateFilter(ChangeProduct.enter_new_description))
@@ -58,7 +58,7 @@ async def show_products(message: Message, state: FSMContext):
     data = await state.get_data()
     try:
         prod.update_product_description(data['product_id'], message.text)
-        await message.answer(text = 'changed', parse_mode='HTML', reply_markup=admin_panel)
+        await message.answer(text = LEXICON_MESSAGE['changed'], parse_mode='HTML', reply_markup=admin_panel)
     except Exception as ex:
         await message.answer(text=LEXICON_MESSAGE['error'], parse_mode='HTML', reply_markup=admin_panel)
         # await message.answer(text=str(ex))
@@ -67,7 +67,7 @@ async def show_products(message: Message, state: FSMContext):
 
 @router.message(F.text == LEXICON_KEYBOARD['edit_price'], StateFilter(ChangeProduct.enter_setting))
 async def change_product(message: Message, state: FSMContext):
-    await message.answer(text = 'edit_price', parse_mode='HTML', reply_markup=empty_keyboard)
+    await message.answer(text = LEXICON_MESSAGE['change_product_price'], parse_mode='HTML', reply_markup=empty_keyboard)
     await state.set_state(ChangeProduct.enter_new_price)
 
 @router.message(StateFilter(ChangeProduct.enter_new_price))
@@ -75,7 +75,7 @@ async def show_products(message: Message, state: FSMContext):
     data = await state.get_data()
     try:
         prod.update_product_price(data['product_id'], int(message.text))
-        await message.answer(text = 'changed', parse_mode='HTML', reply_markup=admin_panel)
+        await message.answer(text = LEXICON_MESSAGE['changed'], parse_mode='HTML', reply_markup=admin_panel)
     except:
         await message.answer(text=LEXICON_MESSAGE['error'])
     await state.clear()
@@ -86,7 +86,7 @@ async def change_product(message: Message, state: FSMContext):
     data = await state.get_data()
     try:
         prod.delete_product(data['product_id'])
-        await message.answer(text = 'deleted', parse_mode='HTML', reply_markup=admin_panel)
+        await message.answer(text = LEXICON_MESSAGE['delete_product'], parse_mode='HTML', reply_markup=admin_panel)
     except:
         await message.answer(text=LEXICON_MESSAGE['error'])
     await state.clear()
@@ -95,7 +95,7 @@ async def change_product(message: Message, state: FSMContext):
 
 @router.message(F.text == LEXICON_KEYBOARD['cancel'], StateFilter(ChangeProduct.enter_setting))
 async def change_product(message: Message, state: FSMContext):
-    await message.answer(text = 'cancel', parse_mode='HTML', reply_markup=admin_panel)
+    await message.answer(text = LEXICON_MESSAGE['cancel'], parse_mode='HTML', reply_markup=admin_panel)
     await state.set_state(Admin.main_menu)
 
 

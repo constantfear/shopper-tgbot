@@ -7,7 +7,7 @@ from aiogram.types import Message
 
 from Configs.config import make_config
 from KeyBoards.keyboards import main_panel, empty_keyboard, cancel_panel
-from Lexicon.lexicon import LEXICON_MESSAGE, LEXICON_KEYBOARD
+from Lexicon.lexicon import LEXICON_MESSAGE, LEXICON_KEYBOARD, PRODUCT_HEADER
 import Functions.functions as func
 from Filters.filters import ShowProducts
 from Database.products import get_types, get_products_by_type
@@ -27,7 +27,7 @@ async def proc_start_command(message: Message, state: FSMContext):
 async def proc_start_command(message: Message, state: FSMContext):
     product_type = int(message.text)
     products = get_products_by_type(product_type)
-    msg = ''.join([str(row) for row in products])
+    msg = func.to_table_message(PRODUCT_HEADER, products)
     if msg != '':
         await message.answer(text = msg, parse_mode='HTML', reply_markup=main_panel)
     else:

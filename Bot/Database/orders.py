@@ -1,7 +1,7 @@
 from sqlalchemy.sql import select
 from sqlalchemy import CursorResult
 
-from Database.connection_to_database import engine, orders, order_list
+from Database.connection_to_database import engine, orders, order_list, products
 from Database.products import get_product_by_id
 
 def insert_order(user_id: int, order: dict, phone: str, addres: str) -> None:
@@ -41,7 +41,7 @@ def get_orders() -> CursorResult:
 def get_order_list(order_id: int) -> CursorResult:
     with engine.connect() as conn:
         query = (
-            order_list.select().where(order_list.c.order_id == order_id)
+            select(products.c.name, order_list.c.amount, order_list.c.total_price).join(products, products.c.product_id==order_list.c.product_id).where(order_list.c.order_id == order_id)
         )
         res = conn.execute(query)
         return res
